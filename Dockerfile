@@ -22,16 +22,3 @@ RUN apt update && apt install -y \
 
 # For CUDA profiling, TensorFlow requires CUPTI.
 ENV LD_LIBRARY_PATH /usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH
-
-# Start of Conda installation of tensorflow
-COPY anaconda.yaml /tmp
-
-RUN apt update && apt install -y build-essential libssl1.0.0 wget && apt clean
-RUN cd /tmp && wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && chmod a+x /tmp/Miniconda3-latest-Linux-x86_64.sh
-RUN /tmp/Miniconda3-latest-Linux-x86_64.sh -b -p /opt/anaconda
-RUN /opt/anaconda/bin/conda-env update -f /tmp/anaconda.yaml
-
-ENV PYTHONUNBUFFERED=1
-ENV PATH=/opt/anaconda/bin:$PATH
-
-ENTRYPOINT ["python"]
